@@ -21,7 +21,7 @@ defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 
 # font fix
 git clone https://github.com/powerline/fonts.git --depth=1 "$HOME/fonts"
-cp -r "$HOME/fonts/*/*.ttf" /Library/Fonts/.
+cp -r "$HOME"/fonts/*/*.ttf /Library/Fonts/.
 rm -rf "$HOME/fonts"
 
 # Create and set default profile for iTerm2
