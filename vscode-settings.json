@@ -1,0 +1,5 @@
+{
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.integrated.shell.osx": "/usr/local/bin/zsh",
+    "terminal.integrated.fontFamily": "Meslo LG S DZ for Powerline"
+}
