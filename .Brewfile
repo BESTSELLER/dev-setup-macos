@@ -1,6 +1,7 @@
 # vim: syntax=ruby filetype=ruby
 tap 'homebrew/bundle'
 tap 'homebrew/core'
+tap 'hashicorp/tap'
 
 # System tools
 brew 'bash'
@@ -40,7 +41,8 @@ brew 'kubectl'
 brew 'kubectx'
 brew 'azure-cli'
 brew 'htop'
-brew 'terraform'
+brew 'hashicorp/tap/terraform'
+brew 'hashicorp/tap/vault'
 brew 'velero'
 brew 'bfg'
 brew 'stern'
