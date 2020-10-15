@@ -1,6 +1,14 @@
 #!/bin/bash 
 
+# dependencies
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+if ! which git ; then
+    brew install git
+fi
+
+# Clone and install
+git clone https://github.com/BESTSELLER/dev-setup-macos.git ${HOME}/.setup && \
+brew bundle --file=${HOME}/.setup/.Brewfile
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
 
