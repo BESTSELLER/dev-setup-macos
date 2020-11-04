@@ -15,15 +15,20 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Disable mouse acceleration
 defaults write .GlobalPreferences com.apple.mouse.scaling -1
 
-# Keyboard settings
+### Keyboard settings ###
 # Keyboard --> Key Repeat: Fast (all the way to the right)
-# Keyboard --> Delay Until Repeat: Short (all the way to the right)
-# Keyboard --> Text --> Untick "Correct spelling automatically"
-# Keyboard --> Text --> Untick "Add full stop with double-space"
 defaults write -g InitialKeyRepeat -int 15
+
+# Keyboard --> Delay Until Repeat: Short (all the way to the right)
 defaults write -g KeyRepeat -int 2
+
+# Keyboard --> Text --> Untick "Correct spelling automatically"
 defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+
+# Keyboard --> Text --> Untick "Add full stop with double-space"
 defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Keyboard --> Text --> Untick "Use smart quotes and dashes"
 defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 
@@ -52,7 +57,7 @@ defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 cat "$HOME/.setup/vscode.extensions" | xargs -L1 code --install-extension
 
 
-# Default settings, to make sure that the integrated termnal looks "pretty"
+# Default settings for vscode
 if ! [ -f "$HOME/Library/Application Support/Code/User/settings.json" ]
 then
   cp "$HOME/.setup/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
