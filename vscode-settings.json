@@ -1,5 +1,35 @@
 {
     "terminal.external.osxExec": "iTerm.app",
     "terminal.integrated.shell.osx": "/usr/local/bin/zsh",
-    "terminal.integrated.fontFamily": "Meslo LG S DZ for Powerline"
+    "terminal.integrated.fontFamily": "Meslo LG S DZ for Powerline",
+    "workbench.iconTheme": "material-icon-theme",
+    "scm.defaultViewMode": "tree",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    },
+    "go.autocompleteUnimportedPackages": true,
+    "go.useLanguageServer": true,
+    "terraform.languageServer": {
+        "external": true,
+        "args": [
+            "serve"
+        ]
+    },
+    "[terraform]": {
+        "editor.formatOnSave": true
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }
