@@ -1,6 +1,7 @@
 # vim: syntax=ruby filetype=ruby
 tap 'homebrew/bundle'
 tap 'homebrew/core'
+tap 'homebrew/cask'
 tap 'hashicorp/tap'
 
 # System tools
