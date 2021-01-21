@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dev-setup-macos
+  description: Dev setup for MacOs
+  tags:
+    - development
+    - zsh
+    - MacOs
+  annotations:
+    github.com/project-slug:  BESTSELLER/dev-setup-macos
+    circleci.com/project-slug: github/BESTSELLER/dev-setup-macos
+spec:
+  type: service
+  lifecycle: production
+  owner: engineering-services
+---
+
