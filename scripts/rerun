@@ -5,4 +5,4 @@ then
     echo -e "\e[31mNo cluster name was provided!\e[0m"
     exit 1
 fi
-kubectl patch cluster $1 --type=json -p '[{"op": "replace", "path": "/status", "value":"Rerun"}]'
+kubectl patch cluster $1 --type=json -p '[{"op": "replace", "path": "/status/name", "value":"Rerun"}]'
