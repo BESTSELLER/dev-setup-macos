@@ -7,10 +7,10 @@ if ! which git ; then
 fi
 
 # Clone and install
-git clone https://github.com/BESTSELLER/dev-setup-macos.git ${HOME}/.setup && \
+git clone https://github.com/BESTSELLER/dev-setup-macos.git ${HOME}/.setup
 brew bundle --file=${HOME}/.setup/.Brewfile
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Disable mouse acceleration
 defaults write .GlobalPreferences com.apple.mouse.scaling -1
