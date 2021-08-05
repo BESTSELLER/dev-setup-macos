@@ -49,6 +49,7 @@ brew 'velero'
 brew 'bfg'
 brew 'stern'
 brew 'circleci'
+brew 'fluxctl'
 
 # Casks
 cask 'iterm2'
