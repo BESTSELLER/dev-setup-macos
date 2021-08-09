@@ -3,6 +3,7 @@ tap 'homebrew/bundle'
 tap 'homebrew/core'
 tap 'homebrew/cask'
 tap 'hashicorp/tap'
+tap 'fluxcd/tap/flux'
 
 # System tools
 brew 'bash'
