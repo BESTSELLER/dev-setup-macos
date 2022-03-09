@@ -35,6 +35,7 @@ brew 'gettext'
 
 # Magic
 brew 'git'
+brew 'git'
 brew 'go'
 brew 'docker'
 brew 'python'
@@ -60,4 +61,3 @@ cask 'insomnia'
 cask 'slack'
 cask 'google-chrome'
 cask 'dotnet-sdk'
-# cask 'adoptopenjdk --no-quarantine'
