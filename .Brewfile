@@ -4,6 +4,7 @@ tap 'homebrew/core'
 tap 'homebrew/cask'
 tap 'hashicorp/tap'
 tap 'fluxcd/tap/flux'
+tap 'gitguardian/tap'
 
 # System tools
 brew 'bash'
@@ -50,6 +51,7 @@ brew 'velero'
 brew 'bfg'
 brew 'stern'
 brew 'circleci'
+brew 'ggshield'
 
 # Casks
 cask 'iterm2'
