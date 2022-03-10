@@ -71,7 +71,16 @@ defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 /usr/libexec/PlistBuddy -c 'Add :AppleSymbolicHotKeys:27:value:parameters:2 integer 1048576' ~/Library/Preferences/com.apple.symbolichotkeys.plist
 
 # font fix
-git clone https://github.com/powerline/fonts.git --depth=1 "$HOME/fonts"
+if [ -d "$HOME/fonts" ]
+then
+  # Already have it cloned, will update it instead of cloning it again
+  git --git-dir "$HOME/fonts" fetch origin
+  git --git-dir "$HOME/fonts" reset --hard origin/master
+else
+  # We don't have it cloned, let's clone it !
+  git clone https://github.com/powerline/fonts.git --depth=1 "$HOME/fonts"
+fi
+
 cp -r "$HOME"/fonts/*/*.ttf /Library/Fonts/.
 rm -rf "$HOME/fonts"
 
@@ -99,13 +108,19 @@ export ZSH_PATH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH_PATH/custom"
 
 # kubectl-prompt
-git clone https://github.com/superbrothers/zsh-kubectl-prompt.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
-
+if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" ]
+then
+  # Already have it cloned, will update it instead of cloning it again
+  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" fetch origin
+  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" reset --hard origin/master
+else
+  # We don't have it cloned, let's clone it !
+  git clone https://github.com/superbrothers/zsh-kubectl-prompt.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
+fi
 
 # We should have a look at this and make bit nicier, so we don't break stuff if people run this script again
 cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
 
-cp "$LOCAL_DEV_SETUP_MACOS/scripts/go-latest.zsh" "$ZSH_CUSTOM/go-latest.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/config-clean.zsh" "$ZSH_CUSTOM/config-clean.zsh"
 
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/aks-list.zsh" "$ZSH_CUSTOM/aks-list.zsh"
@@ -121,10 +136,12 @@ chmod +x "/usr/local/bin/rerun"
 
 (
   set -x; cd "$(mktemp -d)" &&
-  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/download/v0.3.1/krew.{tar.gz,yaml}" &&
-  tar zxvf krew.tar.gz &&
-  ./krew-"$(uname | tr '[:upper:]' '[:lower:]')_amd64" install \
-    --manifest=krew.yaml --archive=krew.tar.gz
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
 )
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 kubectl krew install config-cleanup
