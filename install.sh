@@ -4,24 +4,27 @@
 set -e
 
 # Check if we are admin before continuing
-sudo -l &> /dev/null
-if [ $? -ne 0 ]
+if ! sudo -l &> /dev/null;
 then
-  echo -e "\e[0;31mYou are not admin \!\e[0m"
-  echo -e "\e[0;31mPlease become admin and then re-run this script.\e[0m"
+  echo -e "\033[0;31mYou are not admin \!\033[0m"
+  echo -e "\033[0;31mPlease become admin and then re-run this script.\033[0m"
+  exit 1
 fi
 
 # Make sure Command Line Tools for Xcode is installed before installing Homebrew
 if ! xcode-select -p &> /dev/null ; then
-  echo -e "\e[0;34mYou do not have \e[4;34mCommand Line Tools for Xcode\e[0m\e[0;34m installed.\e[0m"
-  echo -e "\e[0;32mStarting installation now...\e[0m"
+  echo -e "\033[0;34mYou do not have \033[4;34mCommand Line Tools for Xcode\033[0m\033[0;34m installed.\033[0m"
+  echo -e "\033[0;32mStarting installation now...\033[0m"
   # xcode-select --install
-  echo -e "\e[0;33mPress Enter when installation is finished.\e[0m"
-  read
+  echo -e "\033[0;33mPress Enter when installation has finished.\033[0m"
+  read -r
 fi
 
 # Install Homebrew
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if ! command -v brew &> /dev/null;
+then
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
 # Clone or update local clone of dev-setup-macos
 LOCAL_DEV_SETUP_MACOS="$HOME/.dev-setup-macos"
@@ -91,8 +94,10 @@ cp "$LOCAL_DEV_SETUP_MACOS/com.googlecode.iterm2.plist" "$ITERM_PROFILE_PATH/com
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$ITERM_PROFILE_PATH"
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
-# code --list-extensions
-cat "$LOCAL_DEV_SETUP_MACOS/vscode.extensions" | xargs -L1 code --install-extension
+# Install vscode extensions
+while read -r p; do
+  code --install-extension "$p"
+done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
 
 
 # Default settings for vscode
@@ -118,14 +123,16 @@ else
   git clone https://github.com/superbrothers/zsh-kubectl-prompt.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
 fi
 
-# We should have a look at this and make bit nicier, so we don't break stuff if people run this script again
-cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
+# Add a default .zshrc
+if [ ! -f "$HOME/.zshrc" ]; then
+  cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
+fi
 
+
+# Add our custom scripts
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/config-clean.zsh" "$ZSH_CUSTOM/config-clean.zsh"
-
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/aks-list.zsh" "$ZSH_CUSTOM/aks-list.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/aks-login.zsh" "$ZSH_CUSTOM/aks-login.zsh"
-
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-list.zsh" "$ZSH_CUSTOM/gke-list.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-login.zsh" "$ZSH_CUSTOM/gke-login.zsh"
 
@@ -134,6 +141,7 @@ cp "$LOCAL_DEV_SETUP_MACOS/scripts/_rerun" "$ZSH_PATH/completions/_rerun"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/rerun" "/usr/local/bin/rerun"
 chmod +x "/usr/local/bin/rerun"
 
+# This will install krew
 (
   set -x; cd "$(mktemp -d)" &&
   OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
@@ -146,14 +154,15 @@ chmod +x "/usr/local/bin/rerun"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 kubectl krew install config-cleanup
 
-if [ -z $(git config --global user.email) ]
+
+if [ -z "$(git config --global user.email)" ]
 then
 	echo Enter your e-mail:
-  read gitEmail
+  read -r gitEmail
   git config --global user.email "$gitEmail"
   echo Enter your name:
-  read gitName
+  read -r gitName
   git config --global user.name "$gitName"
 fi
 
-echo -e "\e[0;32m Installation completed! \e[0m"
+echo -e "\033[0;32m Installation completed! \033[0m"
