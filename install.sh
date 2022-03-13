@@ -32,15 +32,18 @@ LOCAL_DEV_SETUP_MACOS="$HOME/.dev-setup-macos"
 if [ -d "$LOCAL_DEV_SETUP_MACOS" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  git --git-dir "$LOCAL_DEV_SETUP_MACOS/.git" fetch origin
-  git --git-dir "$LOCAL_DEV_SETUP_MACOS/.git" reset --hard
-  git --git-dir "$LOCAL_DEV_SETUP_MACOS/.git" pull
+  (
+    cd "$LOCAL_DEV_SETUP_MACOS"
+    git fetch origin
+    git reset --hard origin
+    git pull
+  )
 else
   # We don't have it cloned, let's clone it !
   git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
 fi
 
-brew bundle --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile"
+brew bundle --no-lock --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile"
 
 # Install Oh My Zsh
 if [ ! -d ~/.oh-my-zsh ]; then
@@ -80,9 +83,12 @@ defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 if [ -d "$HOME/fonts" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  git --git-dir "$HOME/fonts/.git" fetch origin
-  git --git-dir "$HOME/fonts/.git" reset --hard
-  git --git-dir "$HOME/fonts/.git" pull
+  (
+    cd "$HOME"/fonts
+    git fetch origin
+    git reset --hard origin
+    git pull
+  )
 else
   # We don't have it cloned, let's clone it !
   git clone https://github.com/powerline/fonts.git --depth=1 "$HOME/fonts"
@@ -121,9 +127,13 @@ export ZSH_CUSTOM="$ZSH_PATH/custom"
 if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git" fetch origin
-  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git" reset --hard
-  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git" pull
+  
+  (
+    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git"
+    git fetch origin
+    git reset --hard origin
+    git pull
+  )
 else
   # We don't have it cloned, let's clone it !
   git clone https://github.com/superbrothers/zsh-kubectl-prompt.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
