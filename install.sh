@@ -6,7 +6,7 @@ set -e
 # Check if we are admin before continuing
 if ! sudo -l &> /dev/null;
 then
-  echo -e "\033[0;31mYou are not admin \!\033[0m"
+  echo -e "\033[0;31mYou are not admin !\033[0m"
   echo -e "\033[0;31mPlease become admin and then re-run this script.\033[0m"
   exit 1
 fi
@@ -32,8 +32,9 @@ LOCAL_DEV_SETUP_MACOS="$HOME/.dev-setup-macos"
 if [ -d "$LOCAL_DEV_SETUP_MACOS" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  git --git-dir "$LOCAL_DEV_SETUP_MACOS" fetch origin
-  git --git-dir "$LOCAL_DEV_SETUP_MACOS" reset --hard origin/master
+  git --git-dir "$LOCAL_DEV_SETUP_MACOS/.git" fetch origin
+  git --git-dir "$LOCAL_DEV_SETUP_MACOS/.git" reset --hard
+  git --git-dir "$LOCAL_DEV_SETUP_MACOS/.git" pull
 else
   # We don't have it cloned, let's clone it !
   git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
@@ -42,7 +43,9 @@ fi
 brew bundle --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile"
 
 # Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)" "" --unattended
+if [ ! -d ~/.oh-my-zsh ]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)" "" --unattended
+fi
 
 # Disable mouse acceleration
 defaults write .GlobalPreferences com.apple.mouse.scaling -1
@@ -77,22 +80,24 @@ defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 if [ -d "$HOME/fonts" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  git --git-dir "$HOME/fonts" fetch origin
-  git --git-dir "$HOME/fonts" reset --hard origin/master
+  git --git-dir "$HOME/fonts/.git" fetch origin
+  git --git-dir "$HOME/fonts/.git" reset --hard
+  git --git-dir "$HOME/fonts/.git" pull
 else
   # We don't have it cloned, let's clone it !
   git clone https://github.com/powerline/fonts.git --depth=1 "$HOME/fonts"
 fi
 
 cp -r "$HOME"/fonts/*/*.ttf /Library/Fonts/.
-rm -rf "$HOME/fonts"
 
 # Create and set default profile for iTerm2
 ITERM_PROFILE_PATH="$HOME/.iterm"
-mkdir "$ITERM_PROFILE_PATH"
-cp "$LOCAL_DEV_SETUP_MACOS/com.googlecode.iterm2.plist" "$ITERM_PROFILE_PATH/com.googlecode.iterm2.plist"
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$ITERM_PROFILE_PATH"
-defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+if [ ! -d "$ITERM_PROFILE_PATH" ]; then
+  mkdir "$ITERM_PROFILE_PATH"
+  cp "$LOCAL_DEV_SETUP_MACOS/com.googlecode.iterm2.plist" "$ITERM_PROFILE_PATH/com.googlecode.iterm2.plist"
+  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$ITERM_PROFILE_PATH"
+  defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+fi
 
 # Install vscode extensions
 while read -r p; do
@@ -116,8 +121,9 @@ export ZSH_CUSTOM="$ZSH_PATH/custom"
 if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" fetch origin
-  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" reset --hard origin/master
+  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git" fetch origin
+  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git" reset --hard
+  git --git-dir "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git" pull
 else
   # We don't have it cloned, let's clone it !
   git clone https://github.com/superbrothers/zsh-kubectl-prompt.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
@@ -154,7 +160,10 @@ chmod +x "/usr/local/bin/rerun"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 kubectl krew install config-cleanup
 
+# Install flux completion
+flux completion zsh > /usr/local/share/zsh/site-functions/_flux
 
+# Check if git email and name are set
 if [ -z "$(git config --global user.email)" ]
 then
 	echo Enter your e-mail:
@@ -165,4 +174,4 @@ then
   git config --global user.name "$gitName"
 fi
 
-echo -e "\033[0;32m Installation completed! \033[0m"
+echo -e "\033[0;32mInstallation completed! \033[0m"
