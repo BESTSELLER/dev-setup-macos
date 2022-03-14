@@ -37,7 +37,6 @@ plugins=(
   docker
   docker-compose
   terraform
-  gitignore
   zsh-kubectl-prompt
 )
 
