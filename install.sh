@@ -139,6 +139,22 @@ else
   git clone https://github.com/superbrothers/zsh-kubectl-prompt.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
 fi
 
+# kubectl-prompt
+if [ -d "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions" ]
+then
+  # Already have it cloned, will update it instead of cloning it again
+  
+  (
+    cd "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions"
+    git fetch origin
+    git reset --hard origin
+    git pull
+  )
+else
+  # We don't have it cloned, let's clone it !
+  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+fi
+
 # Add a default .zshrc
 if [ ! -f "$HOME/.zshrc" ]; then
   cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"

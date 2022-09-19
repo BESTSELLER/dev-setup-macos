@@ -94,3 +94,4 @@ export VAULT_ADDR=https://vault.bestsellerit.com
 export LC_ALL=en_US.UTF-8
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
