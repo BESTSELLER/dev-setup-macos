@@ -92,4 +92,5 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export VAULT_ADDR=https://vault.bestsellerit.com
 export LC_ALL=en_US.UTF-8
-export USE_GKE_GCLOUD_AUTH_PLUGIN=False
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
