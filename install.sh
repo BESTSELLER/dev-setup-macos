@@ -170,6 +170,9 @@ chmod +x "/usr/local/bin/rerun"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 kubectl krew install config-cleanup
 
+export USE_GKE_GCLOUD_AUTH_PLUGIN=False
+gcloud components install gke-gcloud-auth-plugin -q
+
 # Install flux completion
 flux completion zsh > /usr/local/share/zsh/site-functions/_flux
 
