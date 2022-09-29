@@ -79,20 +79,19 @@ compinit
 source ~/.iterm2_shell_integration.zsh
 # zsh: Place this in .zshrc after "source /Users/georgen/.iterm2_shell_integration.zsh".
 iterm2_print_user_vars() {
-  iterm2_set_user_var kube $(cut -d/ -f1 <<<"$ZSH_KUBECTL_PROMPT")
+  iterm2_set_user_var kube "$ZSH_KUBECTL_CONTEXT | $ZSH_KUBECTL_NAMESPACE"
 }
 
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 alias kc=kubectx
 alias tf=terraform
-export PATH=$HOME/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$HOME/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export VAULT_ADDR=https://vault.bestsellerit.com
 export LC_ALL=en_US.UTF-8
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
-export CLOUDSDK_PYTHON="$(brew --prefix)/opt/python@3.8/libexec/bin/python"
-source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src

@@ -20,6 +20,12 @@ function gke-login {
 
         echo $clusterName
 
+        if [[ -n $(kubectl config view -o jsonpath='{.contexts[?(@.name == "'$clusterName'")]}') ]]
+        then
+          echo "cluster is there, skipping"
+          continue
+        fi
+
         gcloud container clusters get-credentials $clusterName --zone $clusterZone --project=$projectId
         
         currentCluster=$(kubectx -c)
