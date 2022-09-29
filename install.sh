@@ -129,7 +129,7 @@ then
   # Already have it cloned, will update it instead of cloning it again
   
   (
-    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt/.git"
+    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
     git fetch origin
     git reset --hard origin
     git pull
@@ -152,7 +152,7 @@ then
   )
 else
   # We don't have it cloned, let's clone it !
-  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+  git clone https://github.com/zsh-users/zsh-completions "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}"/plugins/zsh-completions
 fi
 
 # Add a default .zshrc
@@ -170,8 +170,8 @@ cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-login.zsh" "$ZSH_CUSTOM/gke-login.zsh"
 
 mkdir -p "$ZSH_PATH/completions"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/_rerun" "$ZSH_PATH/completions/_rerun"
-cp "$LOCAL_DEV_SETUP_MACOS/scripts/rerun" "/usr/local/bin/rerun"
-chmod +x "/usr/local/bin/rerun"
+sudo cp "$LOCAL_DEV_SETUP_MACOS/scripts/rerun" "/usr/local/bin/rerun"
+sudo chmod +x "/usr/local/bin/rerun"
 
 # This will install krew
 (
@@ -184,13 +184,12 @@ chmod +x "/usr/local/bin/rerun"
   ./"${KREW}" install krew
 )
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-kubectl krew install config-cleanup
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=False
 gcloud components install gke-gcloud-auth-plugin -q
 
 # Install flux completion
-flux completion zsh > /usr/local/share/zsh/site-functions/_flux
+flux completion zsh > "$ZSH_PATH/completions/_flux"
 
 # Check if git email and name are set
 if [ -z "$(git config --global user.email)" ]
