@@ -23,7 +23,8 @@ fi
 # Install Homebrew
 if ! command -v brew &> /dev/null;
 then
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo -e "\033[0;31mPlease make sure that Homebrew is installed !!\033[0m"
+  exit 1
 fi
 
 # Clone or update local clone of dev-setup-macos
