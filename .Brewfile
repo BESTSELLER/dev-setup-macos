@@ -3,6 +3,7 @@ tap 'homebrew/bundle'
 tap 'homebrew/core'
 tap 'homebrew/cask'
 tap 'hashicorp/tap'
+tap 'fluxcd/tap'
 
 # System tools
 brew 'bash'
@@ -52,5 +53,4 @@ cask 'visual-studio-code'
 cask 'docker'
 cask 'google-cloud-sdk'
 cask 'insomnia'
-cask 'slack'
 cask 'dotnet-sdk'
