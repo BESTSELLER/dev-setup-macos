@@ -106,6 +106,22 @@ if [ ! -d "$ITERM_PROFILE_PATH" ]; then
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi
 
+# Install vscode extensions
+echo "Do you want to install VSCode extentions [y/N]"
+read -r vscodeExtensions
+if [ "$vscodeExtensions" != "${vscodeExtensions#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeExtensions where any Y or y in 1st position will be dropped if they exist.
+  while read -r p; do
+    code --install-extension "$p"
+  done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
+fi
+
+# Default settings for vscode
+echo "Do you want to install VSCode settings [y/N]"
+read -r vscodeSettings
+if [ "$vscodeSettings" != "${vscodeSettings#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeSettings where any Y or y in 1st position will be dropped if they exist.
+  cp "$LOCAL_DEV_SETUP_MACOS/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
+fi
+
 # Download iTerm2 shell integration
 curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
 
