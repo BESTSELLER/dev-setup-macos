@@ -189,7 +189,7 @@ ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubens" "$ZSH_PATH/com
 # Check if git email and name are set
 if [ -z "$(git config --global user.email)" ]
 then
-	echo Enter your e-mail:
+  echo Enter your e-mail:
   read -r gitEmail
   git config --global user.email "$gitEmail"
   echo Enter your name:
