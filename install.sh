@@ -106,18 +106,6 @@ if [ ! -d "$ITERM_PROFILE_PATH" ]; then
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi
 
-# Install vscode extensions
-while read -r p; do
-  code --install-extension "$p"
-done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
-
-
-# Default settings for vscode
-if ! [ -f "$HOME/Library/Application Support/Code/User/settings.json" ]
-then
-  cp "$LOCAL_DEV_SETUP_MACOS/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-fi
-
 # Download iTerm2 shell integration
 curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
 
@@ -157,10 +145,11 @@ else
 fi
 
 # Add a default .zshrc
-if [ ! -f "$HOME/.zshrc" ]; then
-  cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
+echo "Do you want to override your .zshrc file? [y/N]"
+read -r profileOverride
+if [ "$profileOverride" != "${profileOverride#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $profileOverride where any Y or y in 1st position will be dropped if they exist.
+    cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
 fi
-
 
 # Add our custom scripts
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/config-clean.zsh" "$ZSH_CUSTOM/config-clean.zsh"
