@@ -107,14 +107,18 @@ if [ ! -d "$ITERM_PROFILE_PATH" ]; then
 fi
 
 # Install vscode extensions
-while read -r p; do
-  code --install-extension "$p"
-done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
-
+echo "Do you want to install VSCode extentions [y/N]"
+read -r vscodeExtensions
+if [ "$vscodeExtensions" != "${vscodeExtensions#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeExtensions where any Y or y in 1st position will be dropped if they exist.
+  while read -r p; do
+    code --install-extension "$p"
+  done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
+fi
 
 # Default settings for vscode
-if ! [ -f "$HOME/Library/Application Support/Code/User/settings.json" ]
-then
+echo "Do you want to install VSCode settings [y/N]"
+read -r vscodeSettings
+if [ "$vscodeSettings" != "${vscodeSettings#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeSettings where any Y or y in 1st position will be dropped if they exist.
   cp "$LOCAL_DEV_SETUP_MACOS/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
 fi
 
@@ -157,10 +161,11 @@ else
 fi
 
 # Add a default .zshrc
-if [ ! -f "$HOME/.zshrc" ]; then
-  cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
+echo "Do you want to override your .zshrc file? [y/N]"
+read -r profileOverride
+if [ "$profileOverride" != "${profileOverride#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $profileOverride where any Y or y in 1st position will be dropped if they exist.
+    cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
 fi
-
 
 # Add our custom scripts
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/config-clean.zsh" "$ZSH_CUSTOM/config-clean.zsh"
@@ -200,7 +205,7 @@ ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubens" "$ZSH_PATH/com
 # Check if git email and name are set
 if [ -z "$(git config --global user.email)" ]
 then
-	echo Enter your e-mail:
+  echo Enter your e-mail:
   read -r gitEmail
   git config --global user.email "$gitEmail"
   echo Enter your name:
