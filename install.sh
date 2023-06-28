@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/zsh
 
 # exit when any command fails
 set -e
