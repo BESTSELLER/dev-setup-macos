@@ -71,6 +71,12 @@ defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 
+# Disable Press and Hold for "funny" characters
+defaults write -g ApplePressAndHoldEnabled -bool false
+
+# Disable Automatic Capitalising Of Words
+defaults write -g NSAutomaticCapitalizationEnabled -bool false
+
 # Set keyboard shortcut "Move focus to next window" to Command+$
 /usr/libexec/PlistBuddy -c 'Delete :AppleSymbolicHotKeys:27' ~/Library/Preferences/com.apple.symbolichotkeys.plist || true
 /usr/libexec/PlistBuddy -c 'Add :AppleSymbolicHotKeys:27:enabled bool 1' ~/Library/Preferences/com.apple.symbolichotkeys.plist
@@ -132,7 +138,7 @@ export ZSH_CUSTOM="$ZSH_PATH/custom"
 if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  
+
   (
     cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt"
     git fetch origin
@@ -148,7 +154,7 @@ fi
 if [ -d "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions" ]
 then
   # Already have it cloned, will update it instead of cloning it again
-  
+
   (
     cd "${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions"
     git fetch origin
