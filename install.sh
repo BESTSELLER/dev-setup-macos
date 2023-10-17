@@ -213,4 +213,6 @@ then
   git config --global user.name "$gitName"
 fi
 
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
+
 echo -e "\033[0;32mInstallation completed! \033[0m"
