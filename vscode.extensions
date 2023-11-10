@@ -24,7 +24,7 @@ ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.azurecli
 ms-vscode.vscode-typescript-tslint-plugin
 ms-vsliveshare.vsliveshare
-msjsdiag.debugger-for-chrome
+ms-vscode.js-debug
 PKief.material-icon-theme
 ritwickdey.LiveServer
 run-at-scale.terraform-doc-snippets
