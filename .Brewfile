@@ -35,6 +35,8 @@ brew 'gettext'
 # Magic
 brew 'go'
 brew 'jq'
+brew 'yarn'
+brew 'node@18'
 brew 'kubectl'
 brew 'kubectx'
 brew 'azure-cli'
@@ -46,6 +48,7 @@ brew 'bfg'
 brew 'stern'
 brew 'circleci'
 brew 'fluxcd/tap/flux'
+brew 'docker-compose'
 
 # Casks
 cask 'iterm2'
