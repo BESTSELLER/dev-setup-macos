@@ -48,7 +48,6 @@ brew 'bfg'
 brew 'stern'
 brew 'circleci'
 brew 'fluxcd/tap/flux'
-brew 'docker-compose'
 
 # Casks
 cask 'iterm2'
