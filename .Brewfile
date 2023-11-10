@@ -49,6 +49,7 @@ brew 'bfg'
 brew 'stern'
 brew 'circleci'
 brew 'fluxcd/tap/flux'
+brew 'argocd'
 
 # Casks
 cask 'iterm2'
