@@ -31,6 +31,7 @@ brew 'openssh'
 brew 'unzip'
 brew 'macvim'
 brew 'gettext'
+brew 'dive'
 
 # Magic
 brew 'go'
