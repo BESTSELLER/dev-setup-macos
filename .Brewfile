@@ -32,6 +32,7 @@ brew 'unzip'
 brew 'macvim'
 brew 'gettext'
 brew 'dive'
+brew 'helm'
 
 # Magic
 brew 'go'
