@@ -5,11 +5,11 @@ set -e
 
 env
 
-if [ -n "$CI" ]; then
-  echo "VARIABLE_NAME is set to: $CI"
+if [ -n "$MODE" ]; then
+  echo "VARIABLE_NAME is set to: $MODE"
 fi
 
-echo "VARIABLE_NAME is set to: $CI"
+echo "VARIABLE_NAME is set to: $MODE"
 
 
 # Check if we are admin before continuing
