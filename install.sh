@@ -3,6 +3,11 @@
 # exit when any command fails
 set -e
 
+if [ -n "$CI" ]; then
+  echo "VARIABLE_NAME is set to: $VARIABLE_NAME"
+fi
+
+
 # Check if we are admin before continuing
 if ! sudo -l &> /dev/null;
 then
@@ -17,6 +22,11 @@ if ! xcode-select -p &> /dev/null ; then
   echo -e "\033[0;32mStarting installation now...\033[0m"
   # xcode-select --install
   echo -e "\033[0;33mPress Enter when installation has finished.\033[0m"
+
+  if [ -n "$CI" ]; then
+    exit 1
+  fi
+
   read -r
 fi
 
@@ -114,7 +124,12 @@ fi
 
 # Install vscode extensions
 echo "Do you want to install VSCode extentions [y/N]"
-read -r vscodeExtensions
+if [ -n "$CI" ]; then
+  vscodeExtensions="Y"
+else
+  read -r vscodeExtensions
+fi
+
 if [ "$vscodeExtensions" != "${vscodeExtensions#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeExtensions where any Y or y in 1st position will be dropped if they exist.
   while read -r p; do
     code --install-extension "$p"
@@ -123,7 +138,12 @@ fi
 
 # Default settings for vscode
 echo "Do you want to install VSCode settings [y/N]"
-read -r vscodeSettings
+if [ -n "$CI" ]; then
+  vscodeSettings="Y"
+else
+  read -r vscodeSettings
+fi
+
 if [ "$vscodeSettings" != "${vscodeSettings#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeSettings where any Y or y in 1st position will be dropped if they exist.
   cp "$LOCAL_DEV_SETUP_MACOS/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
 fi
@@ -168,7 +188,13 @@ fi
 
 # Add a default .zshrc
 echo "Do you want to override your .zshrc file? [y/N]"
-read -r profileOverride
+
+if [ -n "$CI" ]; then
+  profileOverride="Y"
+else
+  read -r profileOverride
+fi
+
 if [ "$profileOverride" != "${profileOverride#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $profileOverride where any Y or y in 1st position will be dropped if they exist.
     cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
 fi
@@ -212,10 +238,23 @@ ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubens" "$ZSH_PATH/com
 if [ -z "$(git config --global user.email)" ]
 then
   echo Enter your e-mail:
-  read -r gitEmail
+
+  if [ -n "$CI" ]; then
+    gitEmail="test@test.com"
+  else
+    read -r gitEmail
+  fi
+
   git config --global user.email "$gitEmail"
+
   echo Enter your name:
-  read -r gitName
+
+  if [ -n "$CI" ]; then
+    gitName="Test Testersen"
+  else
+    read -r gitName
+  fi
+
   git config --global user.name "$gitName"
 fi
 
