@@ -3,6 +3,8 @@
 # exit when any command fails
 set -e
 
+env
+
 if [ -n "$CI" ]; then
   echo "VARIABLE_NAME is set to: $CI"
 fi
