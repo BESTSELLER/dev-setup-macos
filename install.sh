@@ -4,8 +4,10 @@
 set -e
 
 if [ -n "$CI" ]; then
-  echo "VARIABLE_NAME is set to: $VARIABLE_NAME"
+  echo "VARIABLE_NAME is set to: $CI"
 fi
+
+echo "VARIABLE_NAME is set to: $CI"
 
 
 # Check if we are admin before continuing
