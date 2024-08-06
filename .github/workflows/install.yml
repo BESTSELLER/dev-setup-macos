@@ -21,6 +21,8 @@ jobs:
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
       - name: Run install script
+        env:
+          CI: true
         run: |
           chmod +x install.sh
           sudo ./install.sh
