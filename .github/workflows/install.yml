@@ -22,7 +22,7 @@ jobs:
 
       - name: Run install script
         env:
-          CI: true
+          CI: "${{ env.ci }}"
         run: |
           chmod +x install.sh
           sudo ./install.sh
