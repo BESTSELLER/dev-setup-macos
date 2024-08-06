@@ -3,15 +3,6 @@
 # exit when any command fails
 set -e
 
-env
-
-if [ -n "$MODE" ]; then
-  echo "VARIABLE_NAME is set to: $MODE"
-fi
-
-echo "VARIABLE_NAME is set to: $MODE"
-
-
 # Check if we are admin before continuing
 if ! sudo -l &> /dev/null;
 then
