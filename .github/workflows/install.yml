@@ -25,4 +25,4 @@ jobs:
           MODE: "CI"
         run: |
           chmod +x install.sh
-          sudo ./install.sh
+          ./install.sh
