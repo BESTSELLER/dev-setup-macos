@@ -35,19 +35,24 @@ fi
 # Clone or update local clone of dev-setup-macos
 LOCAL_DEV_SETUP_MACOS="$HOME/.dev-setup-macos"
 
-if [ -d "$LOCAL_DEV_SETUP_MACOS" ]
-then
-  # Already have it cloned, will update it instead of cloning it again
-  (
-    cd "$LOCAL_DEV_SETUP_MACOS"
-    git fetch origin
-    git reset --hard origin
-    git pull
-  )
+if [ -n "$CI" ]; then
+  LOCAL_DEV_SETUP_MACOS="./"
 else
-  # We don't have it cloned, let's clone it !
-  git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
+  if [ -d "$LOCAL_DEV_SETUP_MACOS" ]
+  then
+    # Already have it cloned, will update it instead of cloning it again
+    (
+      cd "$LOCAL_DEV_SETUP_MACOS"
+      git fetch origin
+      git reset --hard origin
+      git pull
+    )
+  else
+    # We don't have it cloned, let's clone it !
+    git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
+  fi
 fi
+
 
 brew bundle --no-lock --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" || true
 
@@ -107,44 +112,6 @@ else
 fi
 
 cp -r "$HOME"/fonts/*/*.ttf /Library/Fonts/.
-
-# Create and set default profile for iTerm2
-ITERM_PROFILE_PATH="$HOME/.iterm"
-if [ ! -d "$ITERM_PROFILE_PATH" ]; then
-  mkdir "$ITERM_PROFILE_PATH"
-  cp "$LOCAL_DEV_SETUP_MACOS/com.googlecode.iterm2.plist" "$ITERM_PROFILE_PATH/com.googlecode.iterm2.plist"
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$ITERM_PROFILE_PATH"
-  defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-fi
-
-# Install vscode extensions
-echo "Do you want to install VSCode extentions [y/N]"
-if [ -n "$CI" ]; then
-  vscodeExtensions="Y"
-else
-  read -r vscodeExtensions
-fi
-
-if [ "$vscodeExtensions" != "${vscodeExtensions#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeExtensions where any Y or y in 1st position will be dropped if they exist.
-  while read -r p; do
-    code --install-extension "$p"
-  done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
-fi
-
-# Default settings for vscode
-echo "Do you want to install VSCode settings [y/N]"
-if [ -n "$CI" ]; then
-  vscodeSettings="Y"
-else
-  read -r vscodeSettings
-fi
-
-if [ "$vscodeSettings" != "${vscodeSettings#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeSettings where any Y or y in 1st position will be dropped if they exist.
-  cp "$LOCAL_DEV_SETUP_MACOS/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-fi
-
-# Download iTerm2 shell integration
-curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
 
 export ZSH_PATH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH_PATH/custom"
