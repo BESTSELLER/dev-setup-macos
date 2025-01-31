@@ -1,9 +1,8 @@
 # vim: syntax=ruby filetype=ruby
-tap 'homebrew/bundle'
-tap 'homebrew/core'
-tap 'homebrew/cask'
-tap 'hashicorp/tap'
-tap 'fluxcd/tap'
+brew tap 'homebrew/bundle'
+brew tap 'homebrew/core'
+brew tap 'hashicorp/tap'
+brew tap 'fluxcd/tap'
 
 # System tools
 brew 'bash'
