@@ -34,8 +34,6 @@ brew 'gettext'
 brew 'dive'
 brew 'helm'
 
-brew 'we-know-this-wont-work'
-
 # Magic
 brew 'go'
 brew 'jq'
