@@ -21,6 +21,6 @@ jobs:
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
       - name: Run install script
-        shell: zsh
+        shell: bash
         run: |
           ./install.sh
