@@ -44,7 +44,7 @@ else
   git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
 fi
 
-brew bundle install --no-lock --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" || true
+brew bundle install --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" || true
 
 # Install Oh My Zsh
 if [ ! -d ~/.oh-my-zsh ]; then
