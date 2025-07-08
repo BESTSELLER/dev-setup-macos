@@ -53,8 +53,7 @@ else
   fi
 fi
 
-
-brew bundle --no-lock --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" --force
+brew bundle install --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" --force || true
 
 # Install Oh My Zsh
 if [ ! -d ~/.oh-my-zsh ]; then
