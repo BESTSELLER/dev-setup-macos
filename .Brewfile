@@ -1,5 +1,4 @@
 # vim: syntax=ruby filetype=ruby
-tap 'homebrew/bundle'
 tap 'homebrew/core'
 tap 'hashicorp/tap'
 tap 'fluxcd/tap'
