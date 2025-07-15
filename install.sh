@@ -17,6 +17,11 @@ if ! xcode-select -p &> /dev/null ; then
   echo -e "\033[0;32mStarting installation now...\033[0m"
   # xcode-select --install
   echo -e "\033[0;33mPress Enter when installation has finished.\033[0m"
+
+  if [ -n "$CI" ]; then
+    exit 1
+  fi
+
   read -r
 fi
 
@@ -30,21 +35,25 @@ fi
 # Clone or update local clone of dev-setup-macos
 LOCAL_DEV_SETUP_MACOS="$HOME/.dev-setup-macos"
 
-if [ -d "$LOCAL_DEV_SETUP_MACOS" ]
-then
-  # Already have it cloned, will update it instead of cloning it again
-  (
-    cd "$LOCAL_DEV_SETUP_MACOS"
-    git fetch origin
-    git reset --hard origin
-    git pull
-  )
+if [ -n "$CI" ]; then
+  LOCAL_DEV_SETUP_MACOS="./"
 else
-  # We don't have it cloned, let's clone it !
-  git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
+  if [ -d "$LOCAL_DEV_SETUP_MACOS" ]
+  then
+    # Already have it cloned, will update it instead of cloning it again
+    (
+      cd "$LOCAL_DEV_SETUP_MACOS"
+      git fetch origin
+      git reset --hard origin
+      git pull
+    )
+  else
+    # We don't have it cloned, let's clone it !
+    git clone https://github.com/BESTSELLER/dev-setup-macos.git "$LOCAL_DEV_SETUP_MACOS"
+  fi
 fi
 
-brew bundle install --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" || true
+brew bundle install --file="$LOCAL_DEV_SETUP_MACOS/.Brewfile" --force || true
 
 # Install Oh My Zsh
 if [ ! -d ~/.oh-my-zsh ]; then
@@ -103,34 +112,6 @@ fi
 
 cp -r "$HOME"/fonts/*/*.ttf /Library/Fonts/.
 
-# Create and set default profile for iTerm2
-ITERM_PROFILE_PATH="$HOME/.iterm"
-if [ ! -d "$ITERM_PROFILE_PATH" ]; then
-  mkdir "$ITERM_PROFILE_PATH"
-  cp "$LOCAL_DEV_SETUP_MACOS/com.googlecode.iterm2.plist" "$ITERM_PROFILE_PATH/com.googlecode.iterm2.plist"
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$ITERM_PROFILE_PATH"
-  defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-fi
-
-# Install vscode extensions
-echo "Do you want to install VSCode extentions [y/N]"
-read -r vscodeExtensions
-if [ "$vscodeExtensions" != "${vscodeExtensions#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeExtensions where any Y or y in 1st position will be dropped if they exist.
-  while read -r p; do
-    code --install-extension "$p"
-  done <"$LOCAL_DEV_SETUP_MACOS/vscode.extensions"
-fi
-
-# Default settings for vscode
-echo "Do you want to install VSCode settings [y/N]"
-read -r vscodeSettings
-if [ "$vscodeSettings" != "${vscodeSettings#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $vscodeSettings where any Y or y in 1st position will be dropped if they exist.
-  cp "$LOCAL_DEV_SETUP_MACOS/vscode-settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-fi
-
-# Download iTerm2 shell integration
-curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
-
 export ZSH_PATH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH_PATH/custom"
 
@@ -168,15 +149,19 @@ fi
 
 # Add a default .zshrc
 echo "Do you want to override your .zshrc file? [y/N]"
-read -r profileOverride
+
+if [ -n "$CI" ]; then
+  profileOverride="Y"
+else
+  read -r profileOverride
+fi
+
 if [ "$profileOverride" != "${profileOverride#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $profileOverride where any Y or y in 1st position will be dropped if they exist.
     cp "$LOCAL_DEV_SETUP_MACOS/.zshrc" "$HOME/.zshrc"
 fi
 
 # Add our custom scripts
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/config-clean.zsh" "$ZSH_CUSTOM/config-clean.zsh"
-cp "$LOCAL_DEV_SETUP_MACOS/scripts/aks-list.zsh" "$ZSH_CUSTOM/aks-list.zsh"
-cp "$LOCAL_DEV_SETUP_MACOS/scripts/aks-login.zsh" "$ZSH_CUSTOM/aks-login.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-list.zsh" "$ZSH_CUSTOM/gke-list.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-login.zsh" "$ZSH_CUSTOM/gke-login.zsh"
 
@@ -212,10 +197,23 @@ ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubens" "$ZSH_PATH/com
 if [ -z "$(git config --global user.email)" ]
 then
   echo Enter your e-mail:
-  read -r gitEmail
+
+  if [ -n "$CI" ]; then
+    gitEmail="test@test.com"
+  else
+    read -r gitEmail
+  fi
+
   git config --global user.email "$gitEmail"
+
   echo Enter your name:
-  read -r gitName
+
+  if [ -n "$CI" ]; then
+    gitName="Test Testersen"
+  else
+    read -r gitName
+  fi
+
   git config --global user.name "$gitName"
 fi
 

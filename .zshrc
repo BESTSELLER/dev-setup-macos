@@ -76,14 +76,8 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
 compinit
 
-source ~/.iterm2_shell_integration.zsh
-# zsh: Place this in .zshrc after "source /Users/georgen/.iterm2_shell_integration.zsh".
-iterm2_print_user_vars() {
-  iterm2_set_user_var kube "$ZSH_KUBECTL_CONTEXT | $ZSH_KUBECTL_NAMESPACE"
-}
-
-source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 alias kc=kubectx
 alias tf=terraform
