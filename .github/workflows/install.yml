@@ -15,6 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Brew update / upgrade
+        shell: bash
+        run: |
+          brew update
+          brew upgrade
+
       - name: Run install script
         shell: bash
         run: |
