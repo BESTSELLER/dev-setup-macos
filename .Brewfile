@@ -51,6 +51,7 @@ brew 'nvm'
 brew 'stern'
 brew 'velero'
 brew 'yq'
+brew 'gum'
 
 # Casks
 cask 'docker'
