@@ -1,6 +1,5 @@
 # vim: syntax=ruby filetype=ruby
 tap 'hashicorp/tap'
-tap 'fluxcd/tap'
 
 # System tools
 brew 'bash-completion'
@@ -38,7 +37,6 @@ brew 'cloc'
 brew 'cmatrix'
 brew 'dos2unix'
 brew 'fastfetch'
-brew 'fluxcd/tap/flux'
 brew 'go'
 brew 'goreleaser'
 brew 'hashicorp/tap/terraform'
@@ -63,3 +61,4 @@ cask 'insomnia'
 cask 'ngrok'
 cask 'tiles'
 cask 'visual-studio-code'
+cask 'BESTSELLER/tap/harpocrates'
