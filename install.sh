@@ -174,9 +174,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=False
 gcloud components install gke-gcloud-auth-plugin -q
 
-# Install flux completion
-flux completion zsh > "$ZSH_PATH/completions/_flux"
-
 # Fixing kubectx and kubens completions
 ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubectx" "$ZSH_PATH/completions/"
 ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubens" "$ZSH_PATH/completions/"
