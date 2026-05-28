@@ -3,14 +3,6 @@
 # exit when any command fails
 set -e
 
-# Check if we are admin before continuing
-if ! sudo -l &> /dev/null;
-then
-  echo -e "\033[0;31mYou are not admin !\033[0m"
-  echo -e "\033[0;31mPlease become admin and then re-run this script.\033[0m"
-  exit 1
-fi
-
 # Make sure Command Line Tools for Xcode is installed before installing Homebrew
 if ! xcode-select -p &> /dev/null ; then
   echo -e "\033[0;34mYou do not have \033[4;34mCommand Line Tools for Xcode\033[0m\033[0;34m installed.\033[0m"
