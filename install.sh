@@ -3,14 +3,6 @@
 # exit when any command fails
 set -e
 
-# Check if we are admin before continuing
-if ! sudo -l &> /dev/null;
-then
-  echo -e "\033[0;31mYou are not admin !\033[0m"
-  echo -e "\033[0;31mPlease become admin and then re-run this script.\033[0m"
-  exit 1
-fi
-
 # Make sure Command Line Tools for Xcode is installed before installing Homebrew
 if ! xcode-select -p &> /dev/null ; then
   echo -e "\033[0;34mYou do not have \033[4;34mCommand Line Tools for Xcode\033[0m\033[0;34m installed.\033[0m"
@@ -166,9 +158,6 @@ cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-list.zsh" "$ZSH_CUSTOM/gke-list.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-login.zsh" "$ZSH_CUSTOM/gke-login.zsh"
 
 mkdir -p "$ZSH_PATH/completions"
-cp "$LOCAL_DEV_SETUP_MACOS/scripts/_rerun" "$ZSH_PATH/completions/_rerun"
-sudo cp "$LOCAL_DEV_SETUP_MACOS/scripts/rerun" "/usr/local/bin/rerun"
-sudo chmod +x "/usr/local/bin/rerun"
 
 # This will install krew
 (
@@ -184,9 +173,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=False
 gcloud components install gke-gcloud-auth-plugin -q
-
-# Install flux completion
-flux completion zsh > "$ZSH_PATH/completions/_flux"
 
 # Fixing kubectx and kubens completions
 ln -s "$(brew --prefix kubectx)/share/zsh/site-functions/_kubectx" "$ZSH_PATH/completions/"
