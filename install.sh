@@ -166,9 +166,6 @@ cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-list.zsh" "$ZSH_CUSTOM/gke-list.zsh"
 cp "$LOCAL_DEV_SETUP_MACOS/scripts/gke-login.zsh" "$ZSH_CUSTOM/gke-login.zsh"
 
 mkdir -p "$ZSH_PATH/completions"
-cp "$LOCAL_DEV_SETUP_MACOS/scripts/_rerun" "$ZSH_PATH/completions/_rerun"
-sudo cp "$LOCAL_DEV_SETUP_MACOS/scripts/rerun" "/usr/local/bin/rerun"
-sudo chmod +x "/usr/local/bin/rerun"
 
 # This will install krew
 (

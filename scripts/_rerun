@@ -1,2 +1,0 @@
-#compdef rerun
-_arguments "1: :($(kubectl get clusters -o=jsonpath='{range .items[*].metadata.name}{@}{"\n"}{end}'))"
