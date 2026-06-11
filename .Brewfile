@@ -1,5 +1,6 @@
 # vim: syntax=ruby filetype=ruby
-tap 'hashicorp/tap'
+tap 'hashicorp/tap', trusted: true
+tap 'BESTSELLER/tap', trusted: true
 
 # System tools
 brew 'bash-completion'
