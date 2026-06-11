@@ -40,8 +40,8 @@ brew 'dos2unix'
 brew 'fastfetch'
 brew 'go'
 brew 'goreleaser'
-brew 'hashicorp/tap/terraform'
-brew 'hashicorp/tap/vault'
+brew 'hashicorp/tap/terraform', trusted: true
+brew 'hashicorp/tap/vault', trusted: true
 brew 'htop'
 brew 'jq'
 brew 'kubectl'
@@ -62,4 +62,4 @@ cask 'insomnia'
 cask 'ngrok'
 cask 'tiles'
 cask 'visual-studio-code'
-cask 'BESTSELLER/tap/harpocrates'
+cask 'BESTSELLER/tap/harpocrates', trusted: true
